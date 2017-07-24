@@ -1,0 +1,7 @@
+package redsocial;
+
+public enum Equipo {
+	BARCELONA, AUCAS, GUAYAQUIL_CITY, 
+	DELFIN, MACARA, LIGA_QUITO, CUENCA, 
+	INDEPENDIENTE, EMELEC, RAPTOR, OLMEDO; 
+}
