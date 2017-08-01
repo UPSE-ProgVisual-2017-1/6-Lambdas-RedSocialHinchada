@@ -1,6 +1,7 @@
 package redsocial;
 
 import java.time.LocalDate;
+import java.util.function.Predicate;
 
 import redsocial.Fanatico.Estado;
 import redsocial.Persona.Genero;
@@ -44,7 +45,96 @@ public class SimuladorRedHinchada {
 		redSocialHinchada.agregarMiembro(orozcoJ);
 		redSocialHinchada.agregarMiembro(hombreCampana);
 		
-		redSocialHinchada.buscarPersonasPorEquipo(Equipo.LIGA_QUITO);
-	}
-
+		//Enfoque 1
+		//redSocialHinchada.buscarPersonasPorEquipo(redSocialHinchada.getMiembros(),Equipo.LIGA_QUITO);
+		
+		//Enfoque 2
+		//redSocialHinchada.buscarPersonasPorRangoFechaNacimiento(redSocialHinchada.getMiembros(), LocalDate.of(1994, 05, 01), LocalDate.of(1996, 8, 10));
+		
+		//Enfoque 3
+		//CriterioBusquedaPorAntecedente criterioAntecedente = new CriterioBusquedaPorAntecedente();
+		//redSocialHinchada.buscarFanaticoPorCriterioDado(redSocialHinchada.getMiembros(), criterioAntecedente );
+		
+		//Enfoque 4
+		/*redSocialHinchada.buscarFanaticoPorCriterioDado(redSocialHinchada.getMiembros(), new Criterio() {
+			
+			@Override
+			public boolean verificar(Fanatico f) {
+				return f.getEstado().equals(Estado.ACTIVO);
+			}
+			
+			@Override
+			public String toString()
+			{
+				return "Estado activo";
+			}
+		} );
+		*/
+		/*
+		RedSocialHinchada.buscarFanaticoPorCriterioDado(redSocialHinchada.getMiembros(), 
+				new Criterio() {
+			
+			@Override
+			public boolean verificar(Fanatico f) {
+				if(f.isSocio() && f.getAntiguedadAnios()>2 && f.getEstado().equals(Estado.ACTIVO))
+				{
+					return true;
+				}
+				return false;
+			}
+			
+			@Override
+			public String toString()
+			{
+				return "Socios con derecho a voto";
+			}
+			
+		});
+		*/
+		/*
+		RedSocialHinchada.buscarFanaticoPorCriterioDado(redSocialHinchada.getMiembros(), 
+				new Criterio() {
+					
+					@Override
+					public boolean verificar(Fanatico f) {
+						int edad = LocalDate.now().getYear() - f.getFechaNacimiento().getYear();
+						if(edad>18 && f.isAntecedentes() && !f.getEstado().equals(Estado.INHABILITADO))
+						{
+							return true;
+						}
+						return false;
+					}
+					
+					@Override
+					public String toString()
+					{
+						return "Vandalos que deben ser vigilados"; 
+					}
+				});
+		*/
+		//Enfoque 5: Expresiones Lambda
+		/*
+		RedSocialHinchada.buscarFanaticoPorCriterioDado(redSocialHinchada.getMiembros(), 
+				f -> f.isAntecedentes());
+		*/
+		/*
+		RedSocialHinchada.buscarFanaticoPorCriterioDado(redSocialHinchada.getMiembros(),
+				(Fanatico f) -> {
+					if(f.isSocio() && f.getAntiguedadAnios()>=2 && f.getEstado().equals(Estado.ACTIVO))
+					{
+						return true;
+					}
+					return false;
+				});
+		*/
+		
+		//Enfoque 6: Lambdas con Interfaces funcionales estandar
+		RedSocialHinchada.
+		buscarFanaticoPorCriterioDadoInterfazFuncionalEstandar(
+				redSocialHinchada.getMiembros(),
+				f -> f.isAntecedentes(), 
+				"Con antecedentes");
+		
+		//Deber es implementar la verificacion de socios a votar con el enfoque 6
+	}	
 }
