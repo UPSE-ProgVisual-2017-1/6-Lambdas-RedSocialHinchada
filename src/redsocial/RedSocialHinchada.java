@@ -3,6 +3,8 @@ package redsocial;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class RedSocialHinchada {
@@ -64,9 +66,11 @@ public class RedSocialHinchada {
 		return resultadoBusqueda;
 	}
 
-
-	public static List<Fanatico> buscarFanaticoPorCriterioDadoInterfazFuncionalEstandar(List<Fanatico> miembros,
-			Predicate<Fanatico> predicate, String detalleCriterio)
+	//Enfoque 6
+	public static List<Fanatico> buscarFanaticoPorCriterioDadoInterfazFuncionalEstandar(
+			List<Fanatico> miembros,
+			Predicate<Fanatico> predicate, 
+			String detalleCriterio)
 	{
 		List<Fanatico> resultadoBusqueda = new ArrayList<Fanatico>();
 		System.out.println("Las fanaticos que cumplen con el criterio " + detalleCriterio + " son: ");
@@ -82,6 +86,61 @@ public class RedSocialHinchada {
 		
 		return resultadoBusqueda;
 	}
+	
+	//Enfoque 7: Aplicar accion sobre filtrados.
+	public static List<Fanatico> buscarFanaticosAplicandoAccion(
+			List<Fanatico> miembros,
+			Predicate<Fanatico> predicate, 
+			String detalleCriterio, 
+			Consumer<Fanatico> consumidora)
+	{
+		List<Fanatico> resultadoBusqueda = new ArrayList<Fanatico>();
+		System.out.println("Las fanaticos que cumplen con el criterio " + detalleCriterio + " son: ");
+		
+		for(Fanatico f: miembros)
+		{
+			if(predicate.test(f))
+			{
+				System.out.println("Antes de aplicar accion: " + f);
+				consumidora.accept(f);
+				resultadoBusqueda.add(f);
+				System.out.println("Depues de aplicar accion: " + f);
+			}
+		}
+		
+		return resultadoBusqueda;
+		
+	}
+	
+	//Enfoque 7.2: Aplicar accion sobre filtrados.
+		public static List<Fanatico> buscarFanaticosAplicandoAccionYMapeando(
+				List<Fanatico> miembros,
+				Predicate<Fanatico> predicate, 
+				String detalleCriterio, 
+				Consumer<Fanatico> consumidora, 
+				Function<Fanatico, String> mapeadora,
+				Consumer<String> procesadoraCadenita) 
+		{
+			List<Fanatico> resultadoBusqueda = new ArrayList<Fanatico>();
+			System.out.println("Las fanaticos que cumplen con el criterio " + detalleCriterio + " son: ");
+			
+			for(Fanatico f: miembros)
+			{
+				if(predicate.test(f))
+				{
+					System.out.println("Antes de aplicar accion: " + f);
+					consumidora.accept(f);
+					String cadenita = mapeadora.apply(f);
+					System.out.println("La cadena es: " + cadenita);
+					procesadoraCadenita.accept(cadenita);
+					resultadoBusqueda.add(f);
+					System.out.println("Depues de aplicar accion: " + f);
+				}
+			}
+			
+			return resultadoBusqueda;
+			
+		}
 	
 	public List<Fanatico> getMiembros() {
 		return miembros;

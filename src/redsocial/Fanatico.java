@@ -107,7 +107,7 @@ public class Fanatico extends Persona{
 	public String toString() {
 		return "Fanatico [" + super.toString() + (equipo != null ? ", equipo=" + equipo + ", " : "") + "socio=" + socio + ", antecedentes="
 				+ antecedentes + ", antiguedadAnios=" + antiguedadAnios + ", "
-				+ (estado != null ? "estado=" + estado : "") + "]";
+				+ (estado != null ? "estado=" + estado : "") + "]\n";
 	}
 	
 	

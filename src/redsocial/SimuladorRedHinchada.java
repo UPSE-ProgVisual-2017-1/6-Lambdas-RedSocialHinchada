@@ -1,6 +1,7 @@
 package redsocial;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.function.Predicate;
 
 import redsocial.Fanatico.Estado;
@@ -129,12 +130,58 @@ public class SimuladorRedHinchada {
 		*/
 		
 		//Enfoque 6: Lambdas con Interfaces funcionales estandar
+		/*
 		RedSocialHinchada.
 		buscarFanaticoPorCriterioDadoInterfazFuncionalEstandar(
 				redSocialHinchada.getMiembros(),
 				f -> f.isAntecedentes(), 
 				"Con antecedentes");
-		
+		*/
+		 
 		//Deber es implementar la verificacion de socios a votar con el enfoque 6
+		
+		//Enfoque 7: Aplicamos accion sobre hinchas filtrados a traves de lambdas y otras interfaces funcionales (Consumer).
+		List<Fanatico> listaFanaticosAntecendetesBorrados = 
+		RedSocialHinchada.buscarFanaticosAplicandoAccion(
+				redSocialHinchada.getMiembros(), 
+				f -> f.isAntecedentes(), 
+				"Antecedentes", 
+				f -> f.setAntecedentes(false));
+		
+		System.out.println("La lista a los que borramos antecedentes es: " + listaFanaticosAntecendetesBorrados);
+		
+		System.out.println("Lista sin antecedentes: \n" + redSocialHinchada.getMiembros());
+		
+		//Filtrar Hinchas que sean socios 
+		//con mas de 2 anos y simular
+		//enviarles un email 
+		//(Imprimir nombre y email diciendole que se acerque 
+		//a votar).
+		
+		//Enfoque 7.1 Enviar email a socios activos
+		RedSocialHinchada.buscarFanaticosAplicandoAccion(
+				redSocialHinchada.getMiembros(),
+				f -> f.isSocio() && f.getAntiguedadAnios()>=2, 
+				"Socios sufragantes", 
+				f -> System.out.println("Socio " + f.getNombre() + " acercarse a votar a su club " + f.getEquipo() + " en las elecciones.... (Enviando email a " + f.getEmail() +" )." ));
+		
+		
+		//Enfoque 7.2: Usando la funcion Mapper
+		List<Fanatico> sociasMujeresPromo = 
+				RedSocialHinchada.buscarFanaticosAplicandoAccionYMapeando(
+				redSocialHinchada.getMiembros(), 
+				f -> f.getGenero().equals(Genero.FEMENINO) && f.isSocio() , 
+				"Promocion mujeres socios", 
+				f -> f.setAntiguedadAnios(f.getAntiguedadAnios()*2), 
+				f -> f.getEmail(), 
+				s -> procesarEmail(s));
+		
+		System.out.println(sociasMujeresPromo);
+		
 	}	
+	
+	public static void procesarEmail(String s){
+		System.out.println("Enviando email a: " + s);
+	}
+	
 }
