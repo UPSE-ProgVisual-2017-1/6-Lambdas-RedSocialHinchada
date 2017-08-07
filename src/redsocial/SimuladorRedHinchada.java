@@ -22,7 +22,7 @@ public class SimuladorRedHinchada {
 		Fanatico katherine = new Fanatico("Katherine", LocalDate.of(1992, 7, 23), Genero.FEMENINO, "Kate@hincha.com", Equipo.BARCELONA, true, false, 2, Estado.ACTIVO);
 		Fanatico capitanCavernicola	= new Fanatico("Capitan Cavernicola", LocalDate.of(1911, 12, 5), Genero.MASCULINO, "cavernicola@hincha.com", Equipo.BARCELONA, true, true, 20, Estado.INHABILITADO);
 		Fanatico cavanni = new Fanatico("Guiseppe", LocalDate.of(1955, 3, 15), Genero.OTROS, "Guiseppe@hincha.com", Equipo.EMELEC, true, true, 18, Estado.INACTIVO);
-		Fanatico gordaNatosa = new Fanatico("Gorda", LocalDate.of(1972, 2, 6), Genero.FEMENINO, "gordaEmelec@hincha.com", Equipo.EMELEC, true, false, 15, Estado.ACTIVO);
+		Fanatico gordaNatosa = new Fanatico("Gorda", LocalDate.of(1972, 8, 7), Genero.FEMENINO, "gordaEmelec@hincha.com", Equipo.EMELEC, true, false, 15, Estado.ACTIVO);
 		Fanatico guambrito = new Fanatico("Guambrito", LocalDate.of(2003, 5, 18), "guambritofff@hincha.com", Equipo.LIGA_QUITO);
 		Fanatico orozcoJ = new Fanatico("Jaimito", LocalDate.of(1968, 10, 15), Genero.MASCULINO, "Jaimito@hincha.com", Equipo.OLMEDO, true);
 		Fanatico chavon = new Fanatico("chavon", LocalDate.of(1998, 5, 8), Genero.OTROS, "chavon@hincha.com", Equipo.DELFIN);
@@ -141,6 +141,7 @@ public class SimuladorRedHinchada {
 		//Deber es implementar la verificacion de socios a votar con el enfoque 6
 		
 		//Enfoque 7: Aplicamos accion sobre hinchas filtrados a traves de lambdas y otras interfaces funcionales (Consumer).
+		/*
 		List<Fanatico> listaFanaticosAntecendetesBorrados = 
 		RedSocialHinchada.buscarFanaticosAplicandoAccion(
 				redSocialHinchada.getMiembros(), 
@@ -151,7 +152,7 @@ public class SimuladorRedHinchada {
 		System.out.println("La lista a los que borramos antecedentes es: " + listaFanaticosAntecendetesBorrados);
 		
 		System.out.println("Lista sin antecedentes: \n" + redSocialHinchada.getMiembros());
-		
+		*/
 		//Filtrar Hinchas que sean socios 
 		//con mas de 2 anos y simular
 		//enviarles un email 
@@ -159,6 +160,7 @@ public class SimuladorRedHinchada {
 		//a votar).
 		
 		//Enfoque 7.1 Enviar email a socios activos
+		/*
 		RedSocialHinchada.buscarFanaticosAplicandoAccion(
 				redSocialHinchada.getMiembros(),
 				f -> f.isSocio() && f.getAntiguedadAnios()>=2, 
@@ -177,8 +179,32 @@ public class SimuladorRedHinchada {
 				s -> procesarEmail(s));
 		
 		System.out.println(sociasMujeresPromo);
+		*/
 		
+		//Enfoque 8: Genericos email a socios activos a votar
+		List<Fanatico> hinchasVotantesNotificados =
+				RedSocialHinchada.<Fanatico, Persona> procesarElementos(
+						redSocialHinchada.getMiembros(), 
+						(Fanatico f) -> f.isSocio() && f.getAntiguedadAnios()>=2 
+						&& f.getEstado().equals(Estado.ACTIVO),
+						(Fanatico f) -> {return (Persona) f;},
+						(Persona p) -> {
+							if(LocalDate.now().getDayOfMonth() == p.getFechaNacimiento().getDayOfMonth() 
+									&& LocalDate.now().getMonthValue() == p.getFechaNacimiento().getMonthValue())
+							{
+								p.emailFelicitacionCumple();
+							}
+						} );	
+		
+		System.out.println(hinchasVotantesNotificados);
+		
+		//Ejercicio enfoque 8
+		//Preguntar si el fanatico es de el equipo XXXX
+		//Retornar ese equipo como String
+		//En base al string vamos a ejecutar una funcion que haga una barra para ese equipo
 	}	
+	
+	
 	
 	public static void procesarEmail(String s){
 		System.out.println("Enviando email a: " + s);

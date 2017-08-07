@@ -141,6 +141,28 @@ public class RedSocialHinchada {
 			return resultadoBusqueda;
 			
 		}
+		
+	public static <X, Y> List<X> procesarElementos(
+			Iterable<X> elementos,
+			Predicate<X> predicado,
+			Function<X,Y> mapeadora,
+			Consumer<Y> consumidora)
+	{
+		List<X> elementosProcesados = new ArrayList<X>();
+		
+		for(X x: elementos)
+		{
+			if(predicado.test(x))
+			{
+				System.out.println("El elemento es:" + x);
+				elementosProcesados.add(x);
+				Y resultadoMapeo = mapeadora.apply(x);
+				System.out.println("El objeto producto de mapeo es:" + resultadoMapeo);
+				consumidora.accept(resultadoMapeo);
+			}
+		}
+		return elementosProcesados;
+	}
 	
 	public List<Fanatico> getMiembros() {
 		return miembros;

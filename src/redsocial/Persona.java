@@ -67,6 +67,12 @@ public class Persona {
 				+ email + "]";
 	}
 	
+	public void emailFelicitacionCumple()
+	{
+		System.out.println("Hola" + nombre + " solo te escribiamos para desearte un feliz cumpleanos.");
+		System.out.println("Haz que este " + fechaNacimiento.getDayOfMonth() + "/" + fechaNacimiento.getMonthValue() +" sea especial." );
+		SimuladorRedHinchada.procesarEmail(email);
+	}
 	
 	
 	
