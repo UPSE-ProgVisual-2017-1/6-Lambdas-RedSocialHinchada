@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import redsocial.Fanatico.Estado;
 import redsocial.Persona.Genero;
+import sun.util.resources.LocaleData;
 
 public class SimuladorRedHinchada {
 
@@ -182,7 +183,7 @@ public class SimuladorRedHinchada {
 		*/
 		
 		//Enfoque 8: Genericos email a socios activos a votar
-		List<Fanatico> hinchasVotantesNotificados =
+		/*List<Fanatico> hinchasVotantesNotificados =
 				RedSocialHinchada.<Fanatico, Persona> procesarElementos(
 						redSocialHinchada.getMiembros(), 
 						(Fanatico f) -> f.isSocio() && f.getAntiguedadAnios()>=2 
@@ -197,11 +198,41 @@ public class SimuladorRedHinchada {
 						} );	
 		
 		System.out.println(hinchasVotantesNotificados);
-		
+		*/
 		//Ejercicio enfoque 8
 		//Preguntar si el fanatico es de el equipo XXXX
 		//Retornar ese equipo como String
 		//En base al string vamos a ejecutar una funcion que haga una barra para ese equipo
+		
+		//Enfoque 9: Aggregated Operations
+		/*
+		 redSocialHinchada.getMiembros().stream()
+			.filter( f -> f.isSocio())
+			.map( f -> f.getEmail())
+			.forEach( s -> procesarEmail(s));
+		*/
+		/*
+		int anoMinimoNacimientoSocio = redSocialHinchada.getMiembros().stream()
+			.filter(f -> f.getGenero().equals(Genero.MASCULINO))
+			.mapToInt(f -> f.getFechaNacimiento().getYear())
+			.min().getAsInt();
+		System.out.println("El anio minimo de nacimiento de un socio es: " + anoMinimoNacimientoSocio);
+		*/
+		/*
+		int conteoMujeresHinchas = (int) redSocialHinchada.getMiembros().stream()
+			.filter(f -> f.getGenero().equals(Genero.FEMENINO))
+			.count();
+		System.out.println("El numero de mujeres hincha inscritas son: " + conteoMujeresHinchas);
+		*/
+		redSocialHinchada.getMiembros().stream()
+			.map(f -> (Persona) f)
+			.forEach(f -> { if( LocalDate.now().getMonthValue() == f.getFechaNacimiento().getMonthValue() &&
+					LocalDate.now().getDayOfMonth() == f.getFechaNacimiento().getDayOfMonth())
+				{
+					f.emailFelicitacionCumple();
+				}});
+		
+		//
 	}	
 	
 	
