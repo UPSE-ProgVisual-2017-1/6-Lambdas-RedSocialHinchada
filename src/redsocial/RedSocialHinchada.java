@@ -142,6 +142,7 @@ public class RedSocialHinchada {
 			
 		}
 		
+		//Enfoque 8: Genericos
 	public static <X, Y> List<X> procesarElementos(
 			Iterable<X> elementos,
 			Predicate<X> predicado,
